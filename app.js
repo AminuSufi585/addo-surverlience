@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var ussd = require('./routes/ussd');
 
 var app = express();
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
