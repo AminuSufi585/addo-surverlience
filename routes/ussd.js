@@ -1,9 +1,19 @@
 var express = require('express');
 var router = express.Router();
+var exec = require('child_process').exec;
+
 /* GET users listing. */
 router.post('/', function(req, res, next) {
   // TODO: work with request(req) sent
-  console.log(prepareData(req.body));
+  console.log(JSON.stringify(prepareData(req.body)));
+    var cmd = 'curl "http://test.hisptz.org:9086/api/25/dataStore/addo/"'+Math.floor(Math.random() * 1234566) + 1  +' -X POST -H "Content-Type: application/json" -d "'+JSON.stringify(prepareData(req.body)).replace(/"/g, '\\"')+'" -u admin:district -v';
+
+    exec(cmd, function(error, stdout, stderr) {
+        console.log("Error");
+        console.log(error);
+        console.log(stdout);
+        console.log("it works")
+    });
   res.json(prepareData(req.body));
 });
 
