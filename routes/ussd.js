@@ -7,14 +7,27 @@ router.post('/', function(req, res, next) {
   // TODO: work with request(req) sent
   console.log(JSON.stringify(prepareData(req.body)));
     var cmd = 'curl "http://test.hisptz.org:9086/api/25/dataStore/addo/"'+Math.floor(Math.random() * 1234566) + 1  +' -X POST -H "Content-Type: application/json" -d "'+JSON.stringify(prepareData(req.body)).replace(/"/g, '\\"')+'" -u admin:district -v';
-
+    var resp = {}
     exec(cmd, function(error, stdout, stderr) {
         console.log("Error");
         console.log(error);
-        console.log(stdout);
-        console.log("it works")
+        if(error){
+           resp = {
+                "status": false,
+                "sms_reply": true,
+                "sms_text": "Kuna tatizo katika utumaji wa ripoti yako ya mwezi."
+            };
+            res.json(resp);
+        }else{
+            resp = {
+                "status": true,
+                "sms_reply": true,
+                "sms_text": "Asante, Ripoti yako ya mwezi imepokelewa kikamilifu."
+            };
+            res.json(resp);
+        }
     });
-  res.json(prepareData(req.body));
+
 });
 
 module.exports = router;
