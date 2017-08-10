@@ -1,3 +1,6 @@
+/**
+ * Created by kelvin on 8/10/17.
+ */
 var express = require('express');
 var router = express.Router();
 var fs = require("fs");
@@ -14,6 +17,8 @@ router.post('/', function(req, res, next) {
     if (month.length < 2) month = '0' + month;
     period =  date.getFullYear()+month;
     filename = period+"_"+getOuMapping(req.body['fin'])+"object.json"
+    console.log(prepareData(req.body));
+    return;
     fs.writeFile("./"+filename, JSON.stringify(prepareData(req.body)), (err) => {
         if (err) {
             console.error(err);
@@ -79,13 +84,16 @@ function prepareData(body){
     var month = body['month'];
     if (month.length < 2) month = '0' + month;
     var returnObject = {
+        "dataSet": "t6N3L1IElxb",
+        "completeData": getFormatedDate(),
+        "period": date.getFullYear()+month,
+        "orgUnit": getOuMapping(body['fin']),
         "dataValues": [ ]
     };
     var elements = getMapping();
     elements.forEach(function (value) {
         returnObject.dataValues.push(
-            
-            { "dataElement": value.dataElement,  "period": date.getFullYear()+month, "orgUnit": getOuMapping(body['fin']), "value": body[value.mapper]}
+            { "dataElement": value.dataElement, "value": body[value.mapper] }
         )
     });
     return returnObject;
@@ -104,41 +112,41 @@ function getFormatedDate() {
 }
 
 function getMapping(){
-  return [
-      {
-        dataElement: "v3EuYoSvE0E",
-        mapper: "b"
-      },{
-        dataElement: "Y62Vo1zRDUf",
-        mapper: "c"
-      },{
-        dataElement: "UtC39Jqq4Yt",
-        mapper: "d"
-      },{
-        dataElement: "CBiSeEBDknO",
-        mapper: "e"
-      },{
-        dataElement: "ALDjeIfaQcv",
-        mapper: "f"
-      },{
-        dataElement: "VeFiaJf1B4I",
-        mapper: "g"
-      },{
-        dataElement: "dOFFeCODlWs",
-        mapper: "h"
-      },{
-        dataElement: "lmCCSUML0x9",
-        mapper: "i"
-      },{
-        dataElement: "aEF2G2GhhQc",
-        mapper: "j"
-      },{
-        dataElement: "nRbRZB3msHc",
-        mapper: "k"
-      },{
-        dataElement: "ur7jLigQosE",
-        mapper: "l"
-      }
+    return [
+        {
+            dataElement: "v3EuYoSvE0E",
+            mapper: "b"
+        },{
+            dataElement: "Y62Vo1zRDUf",
+            mapper: "c"
+        },{
+            dataElement: "UtC39Jqq4Yt",
+            mapper: "d"
+        },{
+            dataElement: "CBiSeEBDknO",
+            mapper: "e"
+        },{
+            dataElement: "ALDjeIfaQcv",
+            mapper: "f"
+        },{
+            dataElement: "VeFiaJf1B4I",
+            mapper: "g"
+        },{
+            dataElement: "dOFFeCODlWs",
+            mapper: "h"
+        },{
+            dataElement: "lmCCSUML0x9",
+            mapper: "i"
+        },{
+            dataElement: "aEF2G2GhhQc",
+            mapper: "j"
+        },{
+            dataElement: "nRbRZB3msHc",
+            mapper: "k"
+        },{
+            dataElement: "ur7jLigQosE",
+            mapper: "l"
+        }
     ];
 }
 
